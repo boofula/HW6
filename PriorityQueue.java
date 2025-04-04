@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Will Bales / 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -151,8 +151,20 @@ class PriorityQueue<E, P> {
 
     public Node add(E e, P priority) {
 
-        // YOUR CODE GOES HERE
-        return null;
+        // Create a new node to add to the queue
+        Node add = new Node(e, priority, tree.size());
+
+        // Add the new node to the end of the array
+        tree.add(add);
+
+        // If the queue is empty, then we have no need to re-heapify
+        if (tree.size() > 1) {
+          // If the queue is not empty, then we need to re-heapify
+          pullUp(tree.size() - 1);
+        }
+
+        // Return the new node
+        return add;
     }
 
 
@@ -167,8 +179,17 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
-
-        // ADD YOUR CODE HERE
+        
+        // Check if the queue is empty
+        for (Node node : tree) {
+            // Check if the element is in the queue at the node
+            // If it is, return true
+            if (node.value.equals(e)) {
+                return true;
+            }
+        }
+        // If we get through the for loop without returning true, then the element
+        // is not in the queue.
         return false;
     }
 
