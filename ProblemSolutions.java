@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Will Bales / 002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -65,10 +65,32 @@ public class ProblemSolutions {
 
   public static int lastBoulder(int[] boulders) {
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
+      // Create a max heap using a priority queue
+      PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+      // Add all boulders to the priority queue
+      for (int boulder : boulders) {
+          pq.add(boulder);
+      }
+      // Here we create a while loop that will run as long as there are 2 or more boulders
+      // in the priority queue
+      while (pq.size() > 1) {
+          // Get the two heaviest boulders
+          int first = pq.poll();
+          int second = pq.poll();
+
+          // If they are not equal, we add the differnce back to the queue
+          if (first != second) {
+              pq.add(first - second);
+          }
+      }
+
+      if (pq.isEmpty()) {
+          // If the queue is empty, return 0
+          return 0;
+      } else {
+          // If there is one boulder left, return its weight
+          return pq.peek();
+      }
   }
 
 
@@ -91,10 +113,28 @@ public class ProblemSolutions {
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        // Create a HashMap to store the frequency of each string
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
+
+        // Iterate through the input list and count the frequency of each string
+        for (String str : input) {
+            // Convert the string to lowercase for case-insensitive comparison
+            frequencyMap.put(str, frequencyMap.getOrDefault(str, 0) + 1);
+        }
+
+        // Create a list to store the duplicates
+        ArrayList<String> duplicates = new ArrayList<>();
+
+        // Sift through the frequency map and find duplicates
+        for (Map.Entry<String, Integer> entry : frequencyMap.entrySet()) {
+            if (entry.getValue() > 1) {
+                duplicates.add(entry.getKey());
+            }
+        }
+        // Here we sort the duplicates list so that it is in ascending order
+        Collections.sort(duplicates);
+
+        return duplicates;  // Make sure result is sorted in ascending order
 
     }
 
@@ -130,10 +170,24 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
-
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        // Create a HashSet to store the unique elements
+        HashSet<Integer> set = new HashSet<>();
+        // Create a TreeSet to store the pairs
+        TreeSet<String> pairs = new TreeSet<>();
+        // Loop through the input array
+        for (int num : input) {
+            // Calculate the complement
+            int complement = k - num;
+            // Check if the complement is in the set
+            if (set.contains(complement)) {
+                // Create a pair string in the format "(a, b)"
+                String pair = "(" + Math.min(num, complement) + ", " + Math.max(num, complement) + ")";
+                // Add the pair to the TreeSet (which keeps it sorted)
+                pairs.add(pair);
+            }
+            // Add the pair to the HashSet
+            set.add(num);
+        }
+        return new ArrayList<>(pairs); // Make sure returned lists is sorted as indicated above
     }
 }
